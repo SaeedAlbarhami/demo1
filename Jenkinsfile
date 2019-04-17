@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('---clean---') {
       steps {
+        echo 'hi how are u'
         sh 'mvn clean -f demo'
       }
     }
