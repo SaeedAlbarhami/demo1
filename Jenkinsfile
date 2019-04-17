@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('---clean---') {
+    stage('---clean 1---') {
       steps {
         echo 'hi how are u'
         sh 'mvn clean -f demo'
