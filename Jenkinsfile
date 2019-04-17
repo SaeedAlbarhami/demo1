@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'demo1'
+    }
+
+  }
   stages {
     stage('---clean---') {
       steps {
