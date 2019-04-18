@@ -110,8 +110,12 @@ pipeline {
             }
             steps {
                 container('docker') {
-                    sh "docker login --username=saeedalbarhami --password=Zoom_123"
-                    sh "docker push ${registryIp}/demo1:${revision}"
+                        script {
+                          docker.withRegistry( '', DockerCred ) {
+                           docker push ${registryIp}/demo1:${revision}
+                          }
+                        }
+               
                 }
             }
         }
