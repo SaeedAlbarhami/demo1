@@ -108,7 +108,7 @@ pipeline {
             }
             steps {
                 container('docker') {
-                    sh "docker login --username=$DOCKER_USER --password=$DOCKER_PASS"
+                    sh "docker login --username=saeedalbarhami --password=Zoom_123"
                     sh "docker push ${registryIp}/demo1:${revision}"
                 }
             }
