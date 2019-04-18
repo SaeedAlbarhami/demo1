@@ -97,7 +97,7 @@ pipeline {
                 container('docker') {
                     script {
                         registryIp = 'saeedalbarhami'
-                        sh "docker build . -t ${registryIp}/demo1:${revision} --build-arg REVISION=${revision}"
+                        docker build . -t ${registryIp}/demo1:${revision} --build-arg REVISION=${revision}
                     }
                 }
             }
