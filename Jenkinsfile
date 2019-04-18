@@ -1,24 +1,12 @@
 pipeline {
-  agent any
-  stages {
-    stage('---clean 1---') {       
-      steps {
-        echo 'Hello from maven slave'
-        def mvn_version = 'M3'
-          withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
-            sh "mvn clean package"
-          }
-      }
+    agent {
+        docker { image 'node:9-alpine' }
     }
-    stage('--test--') {
-      steps {
-        sh 'mvn test'
-      }
+    stages {
+        stage('Test'){
+            steps {
+                sh 'node --version'
+            }
+        }
     }
-    stage('--package--') {
-      steps {
-        sh 'mvn package'
-      }
-    }
-  }
 }
