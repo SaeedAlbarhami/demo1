@@ -10,10 +10,6 @@ def revision
 def registryIp
 
 pipeline {
-    
-    environment {
-    DockerCred = credentials('DockerCred')
-}
         agent {
         kubernetes {
             label 'build-service-pod'
