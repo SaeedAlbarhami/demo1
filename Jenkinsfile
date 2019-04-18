@@ -2,7 +2,7 @@ properties([
     parameters(
         [
             booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false)
-        ]
+        ])
     ])
 
 def branch
@@ -10,6 +10,9 @@ def revision
 def registryIp
 
 pipeline {
+      environment {
+            DockerCred = credentials('DockerCred')
+        }
         agent {
         kubernetes {
             label 'build-service-pod'
