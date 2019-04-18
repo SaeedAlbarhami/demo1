@@ -1,12 +1,11 @@
 properties([
-        parameters(
-                [
-                        booleanParam(
-                                name: 'DEPLOY_BRANCH_TO_TST',
-                                defaultValue: false
-                        )
-                ]
-        )
+    parameters(
+        [
+            booleanParam(name: 'DEPLOY_BRANCH_TO_TST',defaultValue: false)
+            stringParam(name: 'DOCKER_USER',defaultValue: "saeedalbarhami")
+            stringParam(name: 'DOCKER_PASS',defaultValue: "Zoom_123")
+        ]
+    )
 ])
 
 def branch
@@ -19,41 +18,40 @@ pipeline {
             label 'build-service-pod'
             defaultContainer 'jnlp'
             yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    job: build-service
-spec:
-  containers:
-  - name: maven
-    image: maven:3.6-jdk-8-alpine
-    command: ["cat"]
-    tty: true
-    volumeMounts:
-    - name: repository
-      mountPath: /root/.m2/repository
-  - name: docker
-    image: docker:18.09.2
-    command: ["cat"]
-    tty: true
-    volumeMounts:
-    - name: docker-sock
-      mountPath: /var/run/docker.sock
-  volumes:
-  - name: repository
-    persistentVolumeClaim:
-      claimName: jenkins
-  - name: docker-sock
-    hostPath:
-      path: /var/run/docker.sock
-"""
+            apiVersion: v1
+            kind: Pod
+            metadata:
+              labels:
+                job: build-service
+            spec:
+              containers:
+              - name: maven
+                image: maven:3.6-jdk-8-alpine
+                command: ["cat"]
+                tty: true
+                volumeMounts:
+                - name: repository
+                  mountPath: /root/.m2/repository
+              - name: docker
+                image: docker:18.09.2
+                command: ["cat"]
+                tty: true
+                volumeMounts:
+                - name: docker-sock
+                  mountPath: /var/run/docker.sock
+              volumes:
+              - name: repository
+                persistentVolumeClaim:
+                  claimName: jenkins
+              - name: docker-sock
+                hostPath:
+                  path: /var/run/docker.sock
+            """
         }
     }
     options {
         skipDefaultCheckout true
     }
-   
 
     stages {
         stage ('checkout') {
@@ -112,7 +110,7 @@ spec:
             }
             steps {
                 container('docker') {
-                    sh "docker login -u saeedalbarhami -p Zoom_123"
+                    sh "docker login --username=$DOCKER_USER --password=$DOCKER_PASS"
                     sh "docker push ${registryIp}/demo1:${revision}"
                 }
             }
