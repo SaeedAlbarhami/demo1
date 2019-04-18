@@ -13,11 +13,11 @@ pipeline {
      parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
 
-        DOCKER_USER(name: 'User', defaultValue: 'saeedalbarhami', description: 'Enter user info docker hub')
+        text(name: 'DOCKER_USER', defaultValue: 'saeedalbarhami', description: 'Enter user info docker hub')
 
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
 
-        DOCKER_USER(name: 'PASSWORD', defaultValue: 'Zoom_123', description: 'Enter a password')
+        password(name: 'DOCKER_PASS', defaultValue: 'Zoom_123', description: 'Enter a password')
      }
       environment {
             DockerCred = credentials('DockerCred')
