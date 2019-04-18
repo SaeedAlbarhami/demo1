@@ -112,6 +112,7 @@ spec:
             }
             steps {
                 container('docker') {
+                    sh "docker login -u saeedalbarhami -p Zoom_123"
                     sh "docker push ${registryIp}/demo1:${revision}"
                 }
             }
