@@ -20,7 +20,8 @@ pipeline {
     stages {
         stage ('Preparing Building Node)
             {
-                     agent {
+                    steps {
+                            agent {
         kubernetes {
             label 'build-service-pod'
             defaultContainer 'jnlp'
@@ -59,6 +60,7 @@ spec:
     options {
         skipDefaultCheckout true
     }
+                    }
             }
         stage ('checkout') {
             steps {
