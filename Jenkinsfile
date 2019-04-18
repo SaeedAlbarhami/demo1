@@ -28,7 +28,7 @@ metadata:
 spec:
   containers:
   - name: maven
-    image: maven:3.6.0-jdk-11-slim
+    image: maven:3.6-jdk-8-alpine
     command: ["cat"]
     tty: true
     volumeMounts:
@@ -70,10 +70,10 @@ spec:
             }
 
         }
-        stage ('compile') {
+        stage ('clean and compile') {
             steps {
                 container('maven') {
-                    sh 'mvn clean compile test-compile'
+                    sh 'mvn clean compile'
                 }
             }
         }
@@ -91,6 +91,13 @@ spec:
                 }
             }
         }
+        stage ('package ') {
+          steps {
+              container ('maven') {
+                  sh 'mvn package'
+               }
+            }
+        }
         stage ('build artifact') {
             steps {
                 container('maven') {
@@ -98,8 +105,8 @@ spec:
                 }
                 container('docker') {
                     script {
-                        registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
-                        sh "docker build . -t ${registryIp}/demo/app:${revision} --build-arg REVISION=${revision}"
+                        registryIp = 'saeedalbarhami'
+                        sh "docker build . -t ${registryIp}/demo1:${revision} --build-arg REVISION=${revision}"
                     }
                 }
             }
@@ -112,7 +119,7 @@ spec:
             }
             steps {
                 container('docker') {
-                    sh "docker push ${registryIp}/demo/app:${revision}"
+                    sh "docker push ${registryIp}/demo1:${revision}"
                 }
             }
         }
@@ -123,11 +130,8 @@ spec:
                 }
             }
             steps {
-                build job: './../Deploy', parameters: [
-                        [$class: 'StringParameterValue', name: 'GIT_REPO', value: 'habr-demo-app'],
-                        [$class: 'StringParameterValue', name: 'VERSION', value: revision],
-                        [$class: 'StringParameterValue', name: 'ENV', value: branch == 'master' ? 'staging' : 'test']
-                ], wait: false
+                
+                 echo 'Thank you '
             }
         }
     }
