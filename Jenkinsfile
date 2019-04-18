@@ -13,15 +13,11 @@ pipeline {
      parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
 
-        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
-
-        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+        DOCKER_USER(name: 'User', defaultValue: 'saeedalbarhami', description: 'Enter user info docker hub')
 
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
 
-        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
-
-        file(name: "FILE", description: "Choose a file to upload")
+        DOCKER_USER(name: 'PASSWORD', defaultValue: 'Zoom_123', description: 'Enter a password')
      }
       environment {
             DockerCred = credentials('DockerCred')
@@ -123,11 +119,9 @@ pipeline {
             }
             steps {
                 container('docker') {
-                        script {
-                          docker.withRegistry( '', DockerCred ) {
-                           sh "docker push ${registryIp}/demo1:${revision}"
-                          }
-                        }
+                    sh "docker login --username=${params.DOCKER_USER} --password=${params.DOCKER_PASS}"
+                    sh "docker push ${registryIp}/demo1:${revision}"
+                }
             }
         }
         stage ('deploy to env') {
