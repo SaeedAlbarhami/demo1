@@ -44,7 +44,7 @@ spec:
   volumes:
   - name: repository
     persistentVolumeClaim:
-      claimName: repository
+      claimName: jenkins
   - name: docker-sock
     hostPath:
       path: /var/run/docker.sock
