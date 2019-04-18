@@ -95,9 +95,9 @@ pipeline {
                     sh "mvn package -Dmaven.test.skip -Drevision=${revision}"
                 }
                 container('docker') {
-                    script {
+                     script {
                         registryIp = 'saeedalbarhami'
-                        docker build . -t ${registryIp}/demo1:${revision} --build-arg REVISION=${revision}
+                        sh "docker build . -t ${registryIp}/demo1:${revision} --build-arg REVISION=${revision}"
                     }
                 }
             }
@@ -115,8 +115,6 @@ pipeline {
                            docker push ${registryIp}/demo1:${revision}
                           }
                         }
-               
-                }
             }
         }
         stage ('deploy to env') {
