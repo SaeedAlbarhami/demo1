@@ -14,8 +14,6 @@ def revision
 def registryIp
 
 pipeline {
-
-        echo 'preparing the env'
         agent {
         kubernetes {
             label 'build-service-pod'
