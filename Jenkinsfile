@@ -112,7 +112,7 @@ pipeline {
                 container('docker') {
                         script {
                           docker.withRegistry( '', DockerCred ) {
-                           docker push ${registryIp}/demo1:${revision}
+                           sh "docker push ${registryIp}/demo1:${revision}"
                           }
                         }
             }
