@@ -1,15 +1,13 @@
 pipeline {
   agent any
   stages {
-    stage('---clean 1---') {
-      agent { label 'maven' }
+    stage('---clean 1---') {       
       steps {
         echo 'Hello from maven slave'
-        sh 'mvn -version'
-        container('maven') {
-          echo 'In container maven...'
-          sh 'source /usr/local/bin/scl_enable && maven --version'
-        }
+        def mvn_version = 'M3'
+          withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
+            sh "mvn clean package"
+          }
       }
     }
     stage('--test--') {
