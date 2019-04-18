@@ -2,8 +2,6 @@ properties([
     parameters(
         [
             booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false)
-            stringParam(name: 'DOCKER_USER', defaultValue: "saeedalbarhami")
-            stringParam(name: 'DOCKER_PASS', defaultValue: "Zoom_123")
         ]
     )
 ])
