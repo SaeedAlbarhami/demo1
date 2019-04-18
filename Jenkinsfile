@@ -91,13 +91,6 @@ spec:
                 }
             }
         }
-        stage ('package ') {
-          steps {
-              container ('maven') {
-                  sh 'mvn package'
-               }
-            }
-        }
         stage ('build artifact') {
             steps {
                 container('maven') {
