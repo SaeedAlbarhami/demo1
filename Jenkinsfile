@@ -2,6 +2,7 @@ properties([
     parameters(
         [
             booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false)
+            string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '') 
         ]
     )
 ])
