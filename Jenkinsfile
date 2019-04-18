@@ -5,7 +5,8 @@ pipeline {
             steps {
                 echo 'cleaning..'
                 echo 'cleaning..'
-                mvn clean
+                def mvnHome =  tool name: 'maven-3', type: 'maven'   
+                sh "${mvnHome}/bin/mvn clean"
             }
         }
         stage('--test--') {
