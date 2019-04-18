@@ -2,13 +2,11 @@ properties([
     parameters(
         [
             booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false)
-        ]
-    parameters(
+        ],
         [
             string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '') 
         ]
-    )
-])
+    ])
 
 def branch
 def revision
