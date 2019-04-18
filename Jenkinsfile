@@ -15,7 +15,12 @@ def registryIp
 
 pipeline {
 
-    agent {
+   
+
+    stages {
+        stage ('Preparing Building Node)
+            {
+                     agent {
         kubernetes {
             label 'build-service-pod'
             defaultContainer 'jnlp'
@@ -54,8 +59,7 @@ spec:
     options {
         skipDefaultCheckout true
     }
-
-    stages {
+            }
         stage ('checkout') {
             steps {
                 script {
