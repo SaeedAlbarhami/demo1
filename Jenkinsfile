@@ -7,7 +7,7 @@ properties([
 
         string(name: 'DOCKER_USER', defaultValue: 'saeedalbarhami', description: 'Enter user info docker hub'),
 
-        password(name: 'DOCKER_PASS', defaultValue: 'Zoom_123', description: 'Enter a password'),
+        password(name: 'DOCKER_PASS', defaultValue: '******', description: 'Enter a password'),
 
         choice(name: 'CHOICE', choices: ['Build Only', 'Build & Deploy to QA', 'Build & Deploy to QA & Prod'], description: 'Attention Please'),
        
