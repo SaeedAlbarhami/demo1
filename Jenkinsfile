@@ -1,11 +1,18 @@
 properties([
     parameters(
         [
-            booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false)
-            stringParam(name: 'DOCKER_USER', defaultValue: "saeedalbarhami")
-            stringParam(name: 'DOCKER_PASS', defaultValue: "Zoom_123")
-        ]
-    )
+        booleanParam(name: 'DEPLOY_BRANCH_TO_TST', defaultValue: false),
+
+        text(name: 'Remarks', defaultValue: 'Release Manager', description: 'Why this pipeline is running?'),
+
+        string(name: 'DOCKER_USER', defaultValue: 'saeedalbarhami', description: 'Enter user info docker hub'),
+
+        password(name: 'DOCKER_PASS', defaultValue: 'Zoom_123', description: 'Enter a password'),
+
+        choice(name: 'CHOICE', choices: ['Build Only', 'Build & Deploy to QA', 'Build & Deploy to QA & Prod'], description: 'Attention Please'),
+        ])
+    ])
+
 ])
 
 def branch
@@ -54,7 +61,7 @@ pipeline {
     }
 
     stages {
-        stage ('checkout') {
+        stage ('Checking Out The Latest Changes') {
             steps {
                 script {
                     def repo = checkout scm
@@ -68,32 +75,36 @@ pipeline {
             }
 
         }
-        stage ('clean and compile') {
+        stage ('Clean & Compile The Code') {
             steps {
                 container('maven') {
                     sh 'mvn clean compile'
                 }
             }
         }
-        stage ('unit test') {
+        stage ('Running Unit Tests') {
             steps {
                 container('maven') {
                     sh 'mvn test'
                 }
             }
         }
-        stage ('integration test') {
+        stage ('Running Integration Tests') {
             steps {
                 container ('maven') {
                     sh 'mvn verify'
                 }
             }
         }
-        stage ('build artifact') {
+        stage ('Building Artifact') {
             steps {
                 container('maven') {
                     sh "mvn package -Dmaven.test.skip -Drevision=${revision}"
                 }
+            }
+        }
+        stage ('Building Container Image') {
+            steps {
                 container('docker') {
                     script {
                         registryIp = 'saeedalbarhami'
@@ -101,8 +112,8 @@ pipeline {
                     }
                 }
             }
-        }
-        stage ('publish artifact') {
+                }
+        stage ('publish Container Image') {
             when {
                 expression {
                     branch == 'master' || params.DEPLOY_BRANCH_TO_TST
@@ -110,12 +121,12 @@ pipeline {
             }
             steps {
                 container('docker') {
-                    sh "docker login --username=$DOCKER_USER --password=$DOCKER_PASS"
+                    sh "docker login -u ${params.DOCKER_USER} -p ${params.DOCKER_PASS}"
                     sh "docker push ${registryIp}/demo1:${revision}"
                 }
             }
         }
-        stage ('deploy to env') {
+        stage ('Deploy The New Version Of The Application To K8S') {
             when {
                 expression {
                     branch == 'master' || params.DEPLOY_BRANCH_TO_TST
