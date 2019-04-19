@@ -10,7 +10,7 @@ properties([
         password(name: 'DOCKER_PASS', defaultValue: 'Zoom_123', description: 'Enter a password'),
 
         choice(name: 'CHOICE', choices: ['Build Only', 'Build & Deploy to QA', 'Build & Deploy to QA & Prod'], description: 'Attention Please'),
-        ])
+       
     ])
 
 ])
